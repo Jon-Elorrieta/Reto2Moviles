@@ -3,6 +3,6 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <external-files-path
     name="mis_imagenes"
-    path="Android/data/com.google.android.apps.photos/Pictures"></external-files-path>
+    path="."></external-files-path>
 
     </paths>

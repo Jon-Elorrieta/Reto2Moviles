@@ -29,7 +29,7 @@ public class CamaraActivity extends AppCompatActivity {
 Button sacarf;
 Button guardarf;
 ImageView Vistaimg;
-//String rutaImagen;
+String rutaImagen;
     static final int CAPTURA_IMAGEN= 1;
      static final int CAPTURA_IMAGEN_Tamaño_REAL= 2;
     @Override
@@ -48,31 +48,31 @@ ImageView Vistaimg;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         //Tenemos camara?
-      // if (intent.resolveActivity(getPackageManager()) != null) {
+      //if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, CAPTURA_IMAGEN);
 
-/*
-            File photoFile = null;
+
+            File imagenArchivo = null;
 
             try {
-                photoFile = crearImagen();
+                imagenArchivo = crearImagenn();
             } catch (IOException ex) {
                 Log.e("Error", ex.toString());
             }
 
-            if (photoFile != null) {
-                Uri photoUri = FileProvider.getUriForFile(this, "com.example.reto2moviles.fileprovider", photoFile);
+            if (imagenArchivo != null) {
+                Uri photoUri = FileProvider.getUriForFile(this, "com.example.reto2moviles.fileprovider", imagenArchivo);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-                startActivityForResult(intent,CAPTURA_IMAGEN_Tamaño_REAL);
+                startActivityForResult(intent,1);
 
             }
 
- */
+
        }
 
-        //onActivityResult(intent,REQUEST_CODE);
+       // onActivityResult(intent,REQUEST_CODE);
 
-   // }
+    //}
     private void galleryAddPic(){
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(path);
@@ -84,13 +84,24 @@ ImageView Vistaimg;
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
        if(requestCode ==CAPTURA_IMAGEN && resultCode==RESULT_OK){
-           Bundle extras =data.getExtras();
-            Bitmap imgBitmap = (Bitmap) extras.get("data");
+           //Bundle extras =data.getExtras();
+           //Bitmap imgBitmap = (Bitmap) extras.get("data");
            //Vistaimg.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-            Vistaimg.setImageBitmap(imgBitmap);
+            Bitmap imgBitmap = BitmapFactory.decodeFile(rutaImagen);
+           Vistaimg.setImageBitmap(imgBitmap);
 
         }
     }
+
+    private File crearImagenn() throws IOException{
+        String nombreImagen="foto_";
+        File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imagen = File.createTempFile(nombreImagen,".jpg",directorio);
+
+        rutaImagen = imagen.getAbsolutePath();
+        return imagen;
+    }
+
 
 String path;
 

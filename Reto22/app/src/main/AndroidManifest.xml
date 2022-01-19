@@ -43,7 +43,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.reto2moviles"
+            android:authorities="com.example.reto2moviles.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -62,7 +62,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
