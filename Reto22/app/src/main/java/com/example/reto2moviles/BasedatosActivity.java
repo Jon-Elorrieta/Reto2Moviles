@@ -75,7 +75,7 @@ Spinner spinner;
 
     if(seleccion.equals("Espacios Naturales")){
 
-String URL = "http://10.5.13.44/android/Selectespaciosnaturales.php";
+String URL = "http://127.0.0.1/android/Selectespaciosnaturales.php";
         BuscarProd(URL);
 
 
