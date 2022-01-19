@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Reto2Moviles</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="nombre">Nombre</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="notienescuenta">No tienes una cuenta?</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="iniciarsesion">Inicia Sesion</string>
+    <string name="registro">Nuevo Registro</string>
+
+
+    <string name="toasterrorsesion">No has introducido los datos correctos</string>
+    <string name="toasterrorvacio">Hay Campos sin rellenar</string>
+
+    <string name="botonvolver">Volver</string>
+
+    <string name="botonconsultas">Consultas</string>
+
+    <string name="botongooglemaps">Google Maps</string>
+
+    <string name="botoncamara">Camara</string>
+
+    <string name="botonsacarfoto">Sacar Foto</string>
+
+    <string name="ConsultaBuscar">Buscar</string>
+
+    <string name="SpinnerConsulta">Elige una opcion</string>
+
+
+    <string-array name="Municipio_espacio">
+        <item>Espacios Naturales</item>
+        <item>Municipio</item>
+    </string-array>
+
+
+    <string-array name="TablasBD">
+        <item>Espacios Naturales</item>
+        <item>Estaciones</item>
+        <item>Provincias</item>
+        <item>Pueblos</item>
+        <item>Estaciones</item>
+        <item>Mediciones</item>
+        <item>Espacios Favoritos</item>
+        <item>Pueblos Favoritos</item>
+        <item>Fotos Espacios</item>
+        <item>Fotos Pueblo</item>
+    </string-array>
+
+</resources>
