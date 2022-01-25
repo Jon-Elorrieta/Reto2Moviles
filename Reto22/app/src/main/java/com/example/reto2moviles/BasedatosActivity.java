@@ -163,63 +163,62 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
             });
             requestQueue.add(jsonObjectRequest);
             spinnerpueblo.setOnItemSelectedListener(this);
-        }else if(adapterView.getId() == R.id.spinner3){
-                estacionesList.clear();
-                String selectedpueblos = adapterView.getSelectedItem().toString();
+        }else if(adapterView.getId() == R.id.spinner3) {
+            estacionesList.clear();
+            String selectedpueblos = adapterView.getSelectedItem().toString();
             Toast.makeText(this, selectedpueblos, Toast.LENGTH_SHORT).show();
-                String url = "http://10.5.13.44/android/Spinnerestaciones.php?Pueblo="+selectedpueblos;
-                requestQueue = Volley.newRequestQueue(this);
+            String url = "http://10.5.13.44/android/Spinnerestaciones.php?Pueblo=" + selectedpueblos;
+            requestQueue = Volley.newRequestQueue(this);
 
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                        url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("estaciones");
-                            for(int i=0; i<jsonArray.length();i++){
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String estacionName = jsonObject.optString("Nombre");
-                                estacionesList.add(estacionName);
-                                estacionesAdapter = new ArrayAdapter<>(BasedatosActivity.this,
-                                        android.R.layout.simple_spinner_item, estacionesList);
-                                estacionesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                spinnerestaciones.setAdapter(estacionesAdapter);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("estaciones");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            String estacionName = jsonObject.optString("Nombre");
+                            estacionesList.add(estacionName);
+                            estacionesAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                    android.R.layout.simple_spinner_item, estacionesList);
+                            estacionesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerestaciones.setAdapter(estacionesAdapter);
 
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        String message = null;
-                        if (error instanceof NetworkError) {
-                            message = "Cannot connect to Internet...Please check your connection!";
-                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                        } else if (error instanceof ServerError) {
-                            message = "The server could not be found. Please try again after some time!!";
-                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                        } else if (error instanceof AuthFailureError) {
-                            message = "Cannot connect to Internet...Please check your connection!";
-                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                        } else if (error instanceof ParseError) {
-                            message = "Parsing error! Please try again after some time!!";
-                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                        } else if (error instanceof NoConnectionError) {
-                            message = "Cannot connect to Internet...Please check your connection!";
-                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                        } else if (error instanceof TimeoutError) {
-                            message = "Connection TimeOut! Please check your internet connection.";
-                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                        }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    String message = null;
+                    if (error instanceof NetworkError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NoConnectionError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof TimeoutError) {
+                        message = "Connection TimeOut! Please check your internet connection.";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                     }
-                });
-                requestQueue.add(jsonObjectRequest);
-          spinnerestaciones.setOnItemSelectedListener(this);
-            }
-        /*
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+            spinnerestaciones.setOnItemSelectedListener(this);
+        }
 
         else if(adapterView.getId() == R.id.spinner2){
             fechaList.clear();
@@ -239,26 +238,33 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
                         JSONArray jsonArray = response.getJSONArray("mediciones");
                         for(int i=0; i<jsonArray.length();i++){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                           Date date ;
+                            Date date ;
                             String date2= jsonObject.optString("Fecha");
 
 
+                            /* No necesitamos esto de momento
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy dd MM");
                             String formattedDate = sdf.format(date2.split("-"));
                             GregorianCalendar gc = new GregorianCalendar();
-                         String[] date3 = date2.split("-");
+                            String[] date3 = date2.split("-");
                             gc.set(Integer.parseInt(date3[0]),Integer.parseInt(date3[1]),Integer.parseInt(date3[2]));
-                                date = gc.getTime();
+                            date = gc.getTime();
+                            */
+        
 
-
-
-                            fechaList.add(date2);
-                            fechaAdapter = new ArrayAdapter<>(BasedatosActivity.this,
-                                    android.R.layout.simple_spinner_item, fechaList);
-                            fechaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinnerfecha.setAdapter(fechaAdapter);
-
+                            if(fechaList.size()!= 0 && !fechaList.get(fechaList.size()-1).equals(date2)){
+                                fechaList.add(date2);
+                                fechaAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                        android.R.layout.simple_spinner_item, fechaList);
+                                fechaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerfecha.setAdapter(fechaAdapter);
+                            }else if(fechaList.size() == 0){
+                                fechaList.add(date2);
+                                fechaAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                        android.R.layout.simple_spinner_item, fechaList);
+                                fechaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerfecha.setAdapter(fechaAdapter);
+                            }
                         }
 
                     } catch (JSONException e) {
@@ -291,10 +297,10 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
                 }
             });
             requestQueue.add(jsonObjectRequest);
-            // spinnerfecha.setOnItemSelectedListener(this);
+            spinnerfecha.setOnItemSelectedListener(this);
         }
 
-         */
+
 
         }
 
