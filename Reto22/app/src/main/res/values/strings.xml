@@ -26,6 +26,11 @@
 
     <string name="SpinnerConsulta">Elige una opcion</string>
 
+    <string name="txtProvincias">Provincias</string>
+    <string name="txtPueblos">Pueblos</string>
+    <string name="txtEstaciones">Estaciones</string>
+    <string name="txtFecha">Fecha</string>
+    <string name="txtHora">Hora</string>
 
     <string-array name="Municipio_espacio">
         <item>Espacios Naturales</item>

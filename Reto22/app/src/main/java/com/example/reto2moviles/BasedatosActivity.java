@@ -3,6 +3,8 @@ package com.example.reto2moviles;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +24,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -29,54 +32,303 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class BasedatosActivity extends AppCompatActivity{
-Spinner spinner;
-    EditText txt1;
-    EditText txt2;
-    EditText txt3;
-    EditText txt4;
+public class BasedatosActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+
+    Spinner spinnerprov, spinnerpueblo, spinnerestaciones,spinnerfecha, spinnerhora;
+    ArrayList<String> provList = new ArrayList<>();
+    ArrayList<String> puebloList = new ArrayList<>();
+    ArrayList<String> estacionesList = new ArrayList<>();
+    ArrayList<String> fechaList = new ArrayList<>();
+    ArrayList<String> horaList = new ArrayList<>();
+
+    ArrayAdapter<String> provAdapter;
+    ArrayAdapter<String> puebloAdapter;
+    ArrayAdapter<String> estacionesAdapter;
+    ArrayAdapter<String> fechaAdapter;
+    ArrayAdapter<String> horaAdapter;
+
     RequestQueue requestQueue;
+    private String URL_pov = "http://10.5.13.44/android/Spinnerprov.php";
+    private String URL_pueblos = "http://10.5.13.44/android/Spinnerpueblos.php";
+
+    private String URL_povc = "http://192.168.1.57/android/Spinnerprov.php";
+    private String URL_pueblosc = "http://192.168.1.57/android/Spinnerpueblos.php";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basedatos);
-
-      spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.TablasBD, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-
-
-        txt1 = findViewById(R.id.editTextTextPersonName6);
-        txt2 = findViewById(R.id.editTextTextPersonName7);
-        txt3 = findViewById(R.id.editTextTextPersonName8);
-        txt4 = findViewById(R.id.editTextTextPersonName9);
+        requestQueue = Volley.newRequestQueue(this);
+        spinnerprov = findViewById(R.id.spinner);
+        spinnerpueblo = findViewById(R.id.spinner3);
+        spinnerestaciones = findViewById(R.id.spinner2);
+        spinnerfecha = findViewById(R.id.spinner4);
+        spinnerhora = findViewById(R.id.spinner5);
 
 
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                URL_pov, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("provincias");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String nombreprov = jsonObject.optString("nombre");
+                        provList.add(nombreprov);
+                        provAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                android.R.layout.simple_spinner_item, provList);
+                        provAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerprov.setAdapter(provAdapter);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+        spinnerprov.setOnItemSelectedListener(this);
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if(adapterView.getId() == R.id.spinner){
+            puebloList.clear();
+            String selectedprov = adapterView.getSelectedItem().toString();
+            String url = "http://10.5.13.44/android/Spinnerpueblos.php?nombre="+selectedprov;
+            requestQueue = Volley.newRequestQueue(this);
+            Toast.makeText(this, selectedprov, Toast.LENGTH_SHORT).show();
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("pueblos");
+                        for(int i=0; i<jsonArray.length();i++){
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            String cityName = jsonObject.optString("Pueblo");
+                            puebloList.add(cityName);
+                            puebloAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                    android.R.layout.simple_spinner_item, puebloList);
+                            puebloAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerpueblo.setAdapter(puebloAdapter);
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    String message = null;
+                    if (error instanceof NetworkError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NoConnectionError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof TimeoutError) {
+                        message = "Connection TimeOut! Please check your internet connection.";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+            spinnerpueblo.setOnItemSelectedListener(this);
+        }else if(adapterView.getId() == R.id.spinner3){
+                estacionesList.clear();
+                String selectedpueblos = adapterView.getSelectedItem().toString();
+            Toast.makeText(this, selectedpueblos, Toast.LENGTH_SHORT).show();
+                String url = "http://10.5.13.44/android/Spinnerestaciones.php?Pueblo="+selectedpueblos;
+                requestQueue = Volley.newRequestQueue(this);
+
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                        url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("estaciones");
+                            for(int i=0; i<jsonArray.length();i++){
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                String estacionName = jsonObject.optString("Nombre");
+                                estacionesList.add(estacionName);
+                                estacionesAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                        android.R.layout.simple_spinner_item, estacionesList);
+                                estacionesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerestaciones.setAdapter(estacionesAdapter);
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String message = null;
+                        if (error instanceof NetworkError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ServerError) {
+                            message = "The server could not be found. Please try again after some time!!";
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        } else if (error instanceof AuthFailureError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        } else if (error instanceof ParseError) {
+                            message = "Parsing error! Please try again after some time!!";
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        } else if (error instanceof NoConnectionError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        } else if (error instanceof TimeoutError) {
+                            message = "Connection TimeOut! Please check your internet connection.";
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                requestQueue.add(jsonObjectRequest);
+          spinnerestaciones.setOnItemSelectedListener(this);
+            }
+        /*
+
+        else if(adapterView.getId() == R.id.spinner2){
+            fechaList.clear();
+            String selectedestaciones = adapterView.getSelectedItem().toString();
+            Toast.makeText(this, selectedestaciones, Toast.LENGTH_SHORT).show();
+            String url = "http://10.5.13.44/android/Spinnerfecha.php?Nombre="+selectedestaciones;
+            requestQueue = Volley.newRequestQueue(this);
+
+
+
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("mediciones");
+                        for(int i=0; i<jsonArray.length();i++){
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                           Date date ;
+                            String date2= jsonObject.optString("Fecha");
+
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy dd MM");
+                            String formattedDate = sdf.format(date2.split("-"));
+                            GregorianCalendar gc = new GregorianCalendar();
+                         String[] date3 = date2.split("-");
+                            gc.set(Integer.parseInt(date3[0]),Integer.parseInt(date3[1]),Integer.parseInt(date3[2]));
+                                date = gc.getTime();
+
+
+
+                            fechaList.add(date2);
+                            fechaAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                    android.R.layout.simple_spinner_item, fechaList);
+                            fechaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerfecha.setAdapter(fechaAdapter);
+
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    String message = null;
+                    if (error instanceof NetworkError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NoConnectionError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof TimeoutError) {
+                        message = "Connection TimeOut! Please check your internet connection.";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+            // spinnerfecha.setOnItemSelectedListener(this);
+        }
+
+         */
+
+        }
+
+
+
+
+
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 
 
     public void volver(View view){
         onBackPressed();
         overridePendingTransition(R.anim.right_in,R.anim.right_out);
     }
-
+/*
 
     public void Buscar(View view){
 
     String seleccion = spinner.getSelectedItem().toString();
 
 
+
+        String URL = "http://127.0.0.1/android/Spinnerprovincias.php";
+      //  BuscarProd(URL);
+
+
     if(seleccion.equals("Espacios Naturales")){
 
-String URL = "http://127.0.0.1/android/Selectespaciosnaturales.php";
-        BuscarProd(URL);
+
 
 
     }else if(seleccion.equals("Estaciones")){
@@ -104,7 +356,16 @@ String URL = "http://127.0.0.1/android/Selectespaciosnaturales.php";
 
     }
 
+    private void mostrarSpinner(){
+        try{
 
+
+        }catch(Exception ex){
+
+        }
+
+
+    }
 
 
 
@@ -209,5 +470,7 @@ String URL = "http://127.0.0.1/android/Selectespaciosnaturales.php";
     }
 
 
+
+     */
 
 }

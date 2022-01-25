@@ -48,31 +48,30 @@ String rutaImagen;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         //Tenemos camara?
-      //if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, CAPTURA_IMAGEN);
-
+        //if (intent.resolveActivity(getPackageManager()) != null) {
+            //startActivityForResult(intent, CAPTURA_IMAGEN);
 
             File imagenArchivo = null;
 
             try {
                 imagenArchivo = crearImagenn();
+                if (imagenArchivo != null) {
+                    Uri photoUri = FileProvider.getUriForFile(this, "com.example.reto2moviles.fileprovider", imagenArchivo);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+                    startActivityForResult(intent,CAPTURA_IMAGEN);
+                }
             } catch (IOException ex) {
                 Log.e("Error", ex.toString());
             }
 
-            if (imagenArchivo != null) {
-                Uri photoUri = FileProvider.getUriForFile(this, "com.example.reto2moviles.fileprovider", imagenArchivo);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-                startActivityForResult(intent,1);
-
-            }
-
 
        }
-
+    // }
        // onActivityResult(intent,REQUEST_CODE);
 
     //}
+
+    /*
     private void galleryAddPic(){
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(path);
@@ -80,6 +79,8 @@ String rutaImagen;
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
+
+     */
 
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -89,7 +90,6 @@ String rutaImagen;
            //Vistaimg.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             Bitmap imgBitmap = BitmapFactory.decodeFile(rutaImagen);
            Vistaimg.setImageBitmap(imgBitmap);
-
         }
     }
 
@@ -97,7 +97,6 @@ String rutaImagen;
         String nombreImagen="foto_";
         File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File imagen = File.createTempFile(nombreImagen,".jpg",directorio);
-
         rutaImagen = imagen.getAbsolutePath();
         return imagen;
     }
