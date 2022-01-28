@@ -166,7 +166,7 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
         }else if(adapterView.getId() == R.id.spinner3){
                 estacionesList.clear();
                 String selectedpueblos = adapterView.getSelectedItem().toString();
-            Toast.makeText(this, selectedpueblos, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, selectedpueblos, Toast.LENGTH_SHORT).show();
                 String url = "http://10.5.13.44/android/Spinnerestaciones.php?Pueblo="+selectedpueblos;
                 requestQueue = Volley.newRequestQueue(this);
 
@@ -219,7 +219,7 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
                 requestQueue.add(jsonObjectRequest);
           spinnerestaciones.setOnItemSelectedListener(this);
             }
-        /*
+
 
         else if(adapterView.getId() == R.id.spinner2){
             fechaList.clear();
@@ -291,10 +291,10 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
                 }
             });
             requestQueue.add(jsonObjectRequest);
-            // spinnerfecha.setOnItemSelectedListener(this);
+            spinnerfecha.setOnItemSelectedListener(this);
         }
 
-         */
+
 
         }
 
