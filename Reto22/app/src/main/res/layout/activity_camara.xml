@@ -7,55 +7,43 @@
     tools:context=".CamaraActivity">
 
     <Button
-        android:id="@+id/btn_sacarfoto4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="BuscarFoto"
-        android:text="@string/txtSeleccionarFoto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/btn_sacarfoto3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="72dp"
-        android:onClick="SubirFoto"
-        android:text="@string/txtSubirFoto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_sacarfoto2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="62dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:onClick="volver"
         android:text="@string/botonvolver"
-        app:layout_constraintEnd_toStartOf="@+id/btn_sacarfoto4"
+        app:layout_constraintEnd_toStartOf="@+id/btn_sacarfoto"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_sacarfoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="22dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:onClick="opciones"
+        android:text="@string/txtOpciones"
+        app:layout_constraintEnd_toStartOf="@+id/btn_sacarfoto2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_sacarfoto2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:onClick="Sacarfoto"
         android:text="@string/botonsacarfoto"
-        app:layout_constraintEnd_toStartOf="@+id/btn_sacarfoto3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="391dp"
-        android:layout_height="600dp"
+        android:layout_height="620dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="25dp"
 
@@ -63,6 +51,5 @@
         android:baselineAlignBottom="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sacarfoto3" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

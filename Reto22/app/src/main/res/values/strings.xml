@@ -33,6 +33,7 @@
     <string name="txtHora">Hora</string>
     <string name="txtSubirFoto">Subir Foto</string>
     <string name="txtSeleccionarFoto">Seleccionar Foto</string>
+    <string name="txtOpciones">Opciones</string>
 
     <string-array name="Municipio_espacio">
         <item>Espacios Naturales</item>
