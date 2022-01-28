@@ -6,28 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".BasedatosActivity">
 
-    <Spinner
-        android:id="@+id/spinner5"
-        android:layout_width="246dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="20dp"
-        android:contextClickable="false"
-        android:tooltipText="@string/SpinnerConsulta"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner4" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="74dp"
-        android:text="@string/txtHora"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/spinner5"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
@@ -131,24 +109,24 @@
         android:id="@+id/button8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="51dp"
+        android:layout_marginTop="129dp"
+        android:layout_marginEnd="56dp"
         android:onClick="volver"
         android:text="@string/botonvolver"
         app:layout_constraintEnd_toStartOf="@+id/button9"
-        app:layout_constraintTop_toBottomOf="@+id/spinner5"
+        app:layout_constraintTop_toBottomOf="@+id/spinner4"
         tools:text="@string/botonvolver" />
 
     <Button
         android:id="@+id/button9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="129dp"
         android:layout_marginEnd="108dp"
         android:onClick="Buscar"
         android:text="@string/ConsultaBuscar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner5"
+        app:layout_constraintTop_toBottomOf="@+id/spinner4"
         tools:text="@string/ConsultaBuscar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

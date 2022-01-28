@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -74,7 +76,7 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
         spinnerpueblo = findViewById(R.id.spinner3);
         spinnerestaciones = findViewById(R.id.spinner2);
         spinnerfecha = findViewById(R.id.spinner4);
-        spinnerhora = findViewById(R.id.spinner5);
+
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -218,7 +220,85 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
                 });
                 requestQueue.add(jsonObjectRequest);
           spinnerestaciones.setOnItemSelectedListener(this);
-            }
+            }else if(adapterView.getId() == R.id.spinner2){
+            fechaList.clear();
+            String selectedestaciones = adapterView.getSelectedItem().toString();
+            Toast.makeText(this, selectedestaciones, Toast.LENGTH_SHORT).show();
+            String url = "http://10.5.13.44/android/Spinnerfecha.php?Nombre="+selectedestaciones;
+            requestQueue = Volley.newRequestQueue(this);
+
+
+
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("mediciones");
+                        for(int i=0; i<jsonArray.length();i++){
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            Date date ;
+                            String date2= jsonObject.optString("Fecha");
+
+
+                            /* No necesitamos esto de momento
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy dd MM");
+                            String formattedDate = sdf.format(date2.split("-"));
+                            GregorianCalendar gc = new GregorianCalendar();
+                            String[] date3 = date2.split("-");
+                            gc.set(Integer.parseInt(date3[0]),Integer.parseInt(date3[1]),Integer.parseInt(date3[2]));
+                            date = gc.getTime();
+                            */
+
+
+                            if(fechaList.size()!= 0 && !fechaList.get(fechaList.size()-1).equals(date2)){
+                                fechaList.add(date2);
+                                fechaAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                        android.R.layout.simple_spinner_item, fechaList);
+                                fechaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerfecha.setAdapter(fechaAdapter);
+                            }else if(fechaList.size() == 0){
+                                fechaList.add(date2);
+                                fechaAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                        android.R.layout.simple_spinner_item, fechaList);
+                                fechaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerfecha.setAdapter(fechaAdapter);
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    String message = null;
+                    if (error instanceof NetworkError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof AuthFailureError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof NoConnectionError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    } else if (error instanceof TimeoutError) {
+                        message = "Connection TimeOut! Please check your internet connection.";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+            spinnerfecha.setOnItemSelectedListener(this);
+        }
         /*
 
         else if(adapterView.getId() == R.id.spinner2){
@@ -300,9 +380,6 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
 
 
 
-
-
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -314,9 +391,18 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
         onBackPressed();
         overridePendingTransition(R.anim.right_in,R.anim.right_out);
     }
-/*
+
 
     public void Buscar(View view){
+
+        startActivity(new Intent(this,DataViwerActivity.class));
+
+
+       // overridePendingTransition(R.anim.translate,R.anim.fade_on);
+
+    }
+
+        /*
 
     String seleccion = spinner.getSelectedItem().toString();
 
