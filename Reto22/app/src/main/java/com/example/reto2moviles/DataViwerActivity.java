@@ -39,14 +39,16 @@ public class DataViwerActivity extends AppCompatActivity {
         setContentView(R.layout.item_table);
         tablaMediciones = findViewById(R.id.tablaMediciones);
         contexto = this;
-        cargarDatos();
+        Bundle datos = getIntent().getExtras();
+        //Cogemos los datos dados por la activity anterior
+        String fecha = datos.getString("fecha");
+        Toast.makeText(this, fecha, Toast.LENGTH_SHORT).show();
+        String estacion = datos.getString("estacion");
+        Toast.makeText(this, estacion, Toast.LENGTH_SHORT).show();
+        cargarDatos(fecha, estacion);
     }
 
-    private void cargarDatos(){
-        //Cogemos los datos dados por la activity anterior
-        Bundle datos = getIntent().getExtras();
-        String fecha = datos.getString("fecha");
-        String estacion = datos.getString("estacion");
+    private void cargarDatos(String fecha, String estacion){
         //Ahora llamamos al servidor para que nos devuelva los datos que nos interesan
         String url = "http://10.5.13.44/android/Tabla.php?Fecha="+fecha+"&Estacion="+estacion;
         requestQueue = Volley.newRequestQueue(this);
@@ -76,6 +78,7 @@ public class DataViwerActivity extends AppCompatActivity {
                         TextView icaestacion = new TextView(contexto);
                         icaestacion.setText(jsonObject.getString("icaestacion"));
                         fila.addView(icaestacion);
+                        tablaMediciones.addView(fila);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
