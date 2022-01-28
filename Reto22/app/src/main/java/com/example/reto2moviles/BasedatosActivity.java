@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -325,48 +326,16 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
         onBackPressed();
         overridePendingTransition(R.anim.right_in,R.anim.right_out);
     }
-/*
 
     public void Buscar(View view){
-
-    String seleccion = spinner.getSelectedItem().toString();
-
-
-
-        String URL = "http://127.0.0.1/android/Spinnerprovincias.php";
-      //  BuscarProd(URL);
-
-
-    if(seleccion.equals("Espacios Naturales")){
-
-
-
-
-    }else if(seleccion.equals("Estaciones")){
-        Toast.makeText(this,"Espacios natu2",Toast.LENGTH_SHORT).show();
-
-    }else if(seleccion.equals("Provincias")){
-        Toast.makeText(this,"Espacios natu3",Toast.LENGTH_SHORT).show();
-    }else if(seleccion.equals("Pueblos")){
-
-    }else if(seleccion.equals("Estaciones")){
-
-    }else if(seleccion.equals("Mediciones")){
-
-    }else if(seleccion.equals("Espacios Favoritos")){
-
-    }else if(seleccion.equals("Pueblos Favoritos")){
-
-    }else if(seleccion.equals("Fotos Espacios")){
-
-    }else if(seleccion.equals("Fotos Pueblo")){
-
+        if(!spinnerfecha.getSelectedItem().toString().equalsIgnoreCase("") && !spinnerestaciones.getSelectedItem().toString().equalsIgnoreCase("")){
+            Intent i=new Intent(this,DataViwerActivity.class);
+            i.putExtra("fecha", spinnerfecha.getSelectedItem().toString());
+            i.putExtra("estacion", spinnerestaciones.getSelectedItem().toString());
+            startActivity(i);
+        }
     }
-
-
-
-    }
-
+/*
     private void mostrarSpinner(){
         try{
 
