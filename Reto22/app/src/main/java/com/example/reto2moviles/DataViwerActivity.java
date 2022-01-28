@@ -47,7 +47,7 @@ public class DataViwerActivity extends AppCompatActivity {
         String fecha = datos.getString("fecha");
         String estacion = datos.getString("estacion");
         //Ahora llamamos al servidor para que nos devuelva los datos que nos interesan
-        String url = "http://10.5.13.44/android/MedicionesEstacion.php?Estacion="+estacion;
+        String url = "http://10.5.13.44/android/MedicionesEstacion.php?Estacion="+estacion+"&Fecha="+fecha;
         requestQueue = Volley.newRequestQueue(this);
 
 
@@ -60,11 +60,21 @@ public class DataViwerActivity extends AppCompatActivity {
                     for(int i=0; i<jsonArray.length();i++){
                         TableRow fila = new TableRow(contexto);
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        if(jsonObject.getString("fecha").equals(fecha)){
-                            
-                        }
-
-
+                        TextView hora = new TextView(contexto);
+                        hora.setText(jsonObject.getString("hora"));
+                        fila.addView(hora);
+                        TextView comgm3 = new TextView(contexto);
+                        comgm3.setText(jsonObject.getString("comgm3"));
+                        fila.addView(comgm3);
+                        TextView nogm3 = new TextView(contexto);
+                        nogm3.setText(jsonObject.getString("nogm3"));
+                        fila.addView(nogm3);
+                        TextView no2 = new TextView(contexto);
+                        no2.setText(jsonObject.getString("no2"));
+                        fila.addView(no2);
+                        TextView icaestacion = new TextView(contexto);
+                        icaestacion.setText(jsonObject.getString("icaestacion"));
+                        fila.addView(icaestacion);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
