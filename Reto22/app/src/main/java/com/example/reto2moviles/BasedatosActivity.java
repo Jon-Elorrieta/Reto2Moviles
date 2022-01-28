@@ -74,7 +74,7 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
         spinnerpueblo = findViewById(R.id.spinner3);
         spinnerestaciones = findViewById(R.id.spinner2);
         spinnerfecha = findViewById(R.id.spinner4);
-        spinnerhora = findViewById(R.id.spinner5);
+        //spinnerhora = findViewById(R.id.spinner5);
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
