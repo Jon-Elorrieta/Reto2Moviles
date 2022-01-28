@@ -39,6 +39,7 @@ public class DataViwerActivity extends AppCompatActivity {
         setContentView(R.layout.item_table);
         tablaMediciones = findViewById(R.id.tablaMediciones);
         contexto = this;
+        cargarDatos();
     }
 
     private void cargarDatos(){
@@ -106,6 +107,7 @@ public class DataViwerActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(jsonObjectRequest);
+
     }
 
 

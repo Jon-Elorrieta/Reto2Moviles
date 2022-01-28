@@ -158,14 +158,7 @@ String rutaImagen;
 
     }
 
-    private void gallerypick(){
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(rutaImagen);
-        Uri contentUri= Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
 
-    }
 
 
     private File crearImagenn() throws IOException{
