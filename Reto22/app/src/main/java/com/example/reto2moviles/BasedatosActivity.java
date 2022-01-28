@@ -243,7 +243,7 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
                            Date date ;
                             String date2= jsonObject.optString("Fecha");
 
-
+/*
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy dd MM");
                             String formattedDate = sdf.format(date2.split("-"));
                             GregorianCalendar gc = new GregorianCalendar();
@@ -253,11 +253,22 @@ public class BasedatosActivity extends AppCompatActivity implements AdapterView.
 
 
 
-                            fechaList.add(date2);
-                            fechaAdapter = new ArrayAdapter<>(BasedatosActivity.this,
-                                    android.R.layout.simple_spinner_item, fechaList);
-                            fechaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinnerfecha.setAdapter(fechaAdapter);
+
+ */
+                            if(fechaList.size()!= 0 && !fechaList.get(fechaList.size()-1).equals(date2)){
+                                fechaList.add(date2);
+                                fechaAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                        android.R.layout.simple_spinner_item, fechaList);
+                                fechaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerfecha.setAdapter(fechaAdapter);
+                            }else if(fechaList.size() == 0){
+                                fechaList.add(date2);
+                                fechaAdapter = new ArrayAdapter<>(BasedatosActivity.this,
+                                        android.R.layout.simple_spinner_item, fechaList);
+                                fechaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinnerfecha.setAdapter(fechaAdapter);
+                            }
+
 
                         }
 

@@ -99,6 +99,35 @@ String rutaImagen;
 
        }
 
+
+    private void mostrarDialogOpciones() {
+        final CharSequence[] opciones={"Tomar Foto","Elegir de Galeria","Subir Foto","Cancelar"};
+        final AlertDialog.Builder builder=new AlertDialog.Builder(CamaraActivity.this);
+        builder.setTitle("Elige una Opción");
+        builder.setItems(opciones, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (opciones[i].equals("Tomar Foto")){
+                    abriCamara();
+                }else if(opciones[i].equals("Subir Foto")) {
+
+                }
+                else{
+                    if (opciones[i].equals("Elegir de Galeria")){
+                        Intent intent=new Intent(Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setType("image/");
+                        startActivityForResult(intent.createChooser(intent,"Seleccione"),COD_SELECCIONA);
+                    }else{
+                        dialogInterface.dismiss();
+                    }
+                }
+            }
+        });
+        builder.show();
+    }
+
+
 /*
     private void galleryAddPic(){
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -124,11 +153,11 @@ String rutaImagen;
             Vistaimg.setImageBitmap(imgBitmap);
         }
 
-        /*else if (resultCode == RESULT_OK) {
+        else if (resultCode == RESULT_OK) {
 
             // compare the resultCode with the
             // SELECT_PICTURE constant
-            if (requestCode == SELECT_PICTURE) {
+            if (requestCode == 10) {
                 // Get the url of the image from data
                 Uri selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
@@ -139,16 +168,17 @@ String rutaImagen;
 
 
         }
- */
+
 
        }
 
     void imageChooser() {
         //Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+       // File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(intent.createChooser(intent, "Selecciona Imagen"), SELECT_PICTURE);
+        startActivityForResult(intent.createChooser(intent, "Selecciona Imagen"), 10);
 
     }
 
@@ -164,9 +194,11 @@ String rutaImagen;
 
     private File crearImagenn() throws IOException{
         String nombreImagen="foto_";
-       File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-       // File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File imagen = File.createTempFile(nombreImagen,".jpg",directorio);
+       //File directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        //File directorio = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File directorio3 =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        //String directorio2 = "com.example.reto2moviles.Media";
+        File imagen = File.createTempFile(nombreImagen,".jpg",directorio3);
         rutaImagen = imagen.getAbsolutePath();
         return imagen;
     }
@@ -181,7 +213,6 @@ String rutaImagen;
 
     public void BuscarFoto(View view){
       imageChooser();
-       // gallerypick();
     }
 
     public void volver(View view){
