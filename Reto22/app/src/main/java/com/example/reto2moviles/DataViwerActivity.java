@@ -47,7 +47,7 @@ public class DataViwerActivity extends AppCompatActivity {
         String fecha = datos.getString("fecha");
         String estacion = datos.getString("estacion");
         //Ahora llamamos al servidor para que nos devuelva los datos que nos interesan
-        String url = "http://10.5.13.44/android/MedicionesEstacion.php?Estacion="+estacion+"&Fecha="+fecha;
+        String url = "http://10.5.13.44/android/Tabla.php?Fecha="+fecha+"&Estacion="+estacion;
         requestQueue = Volley.newRequestQueue(this);
 
 
